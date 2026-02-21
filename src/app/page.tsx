@@ -10,6 +10,7 @@ import GallerySection from "@/components/sections/GallerySection"
 import LoveLetterSection from "@/components/sections/LoveLetterSection"
 import FooterSection from "@/components/sections/FooterSection"
 import CursorSparkle from "@/components/ui/CursorSparkle"
+import FloatingLoginButton from "@/components/ui/FloatingLoginButton";
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null)
@@ -84,6 +85,7 @@ export default function Home() {
       <GallerySection />
       <LoveLetterSection />
       <FooterSection />
+      <FloatingLoginButton />
     </main>
   )
 }

@@ -4,7 +4,8 @@ import { motion } from "motion/react"
 import * as motionClient from "motion/react-client"
 import type { Variants } from "motion/react"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { supabase } from "@/lib/supabase"
 
 export default function GallerySection() {
   return (
@@ -198,8 +199,103 @@ export default function GallerySection() {
   )
 }
 
-// FramerGallery Component (sebelumnya file terpisah)
+// FramerGallery Component
 function FramerGallery() {
+  const [photos, setPhotos] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPhotos = async () => {
+      try {
+        const { data } = await supabase
+          .from("photos")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (data) {
+          setPhotos(
+            data.map((p) => ({
+              id: p.id,
+              src: p.image_url,
+              caption: p.title,
+              date: p.date,
+              accent: "#f06292",
+            }))
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching photos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPhotos();
+  }, []);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div style={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        padding: "50px",
+        flexDirection: "column",
+        gap: "16px"
+      }}>
+        <motion.div
+          animate={{ 
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360]
+          }}
+          transition={{ 
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            background: "linear-gradient(45deg, #f48fb1, #e91e8c)"
+          }}
+        />
+        <span style={{
+          fontFamily: "'Nunito', sans-serif",
+          color: "#ad1457",
+          fontSize: "1.1rem"
+        }}>
+          Loading precious memories...
+        </span>
+      </div>
+    );
+  }
+
+  // Empty state
+  if (photos.length === 0) {
+    return (
+      <div style={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        padding: "50px",
+        flexDirection: "column",
+        gap: "16px",
+        textAlign: "center"
+      }}>
+        <span style={{ fontSize: "3rem" }}>📸</span>
+        <p style={{
+          fontFamily: "'Nunito', sans-serif",
+          color: "#ad1457",
+          fontSize: "1.1rem"
+        }}>
+          No photos yet. Memories will be added soon...
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div
       style={{
@@ -213,13 +309,14 @@ function FramerGallery() {
       }}
     >
       {photos.map((item, i) => (
-        <PolaroidCard key={i} i={i} {...item} />
+        <PolaroidCard key={item.id} i={i} {...item} />
       ))}
     </div>
   )
 }
 
 interface CardProps {
+  id: string
   src: string
   caption: string
   date: string
@@ -231,6 +328,7 @@ const rotations = [-4, 3, -2, 5, -3, 4]
 
 function PolaroidCard({ src, caption, date, accent, i }: CardProps) {
   const [hovered, setHovered] = useState(false)
+  const [imgError, setImgError] = useState(false)
   const rot = rotations[i % rotations.length]
 
   return (
@@ -310,7 +408,13 @@ function PolaroidCard({ src, caption, date, accent, i }: CardProps) {
             animate={{ scale: hovered ? 1.07 : 1 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Image src={src} alt={caption} fill style={{ objectFit: "cover" }} />
+            <Image 
+              src={imgError ? "/images/fallback.jpg" : src} 
+              alt={caption} 
+              fill 
+              style={{ objectFit: "cover" }}
+              onError={() => setImgError(true)}
+            />
           </motionClient.div>
 
           {/* Pink overlay */}
@@ -413,24 +517,3 @@ function flyIn(rotate: number, i: number): Variants {
     },
   }
 }
-
-const photos: Omit<CardProps, "i">[] = [
-  { src: "/images/foto6.jpg", caption: "Our first pic", date: "Jan '25", accent: "#f06292" },
-  { src: "/images/foto2.jpg", caption: "Rayyaa's fave pic", date: "Dec '25", accent: "#e91e8c" },
-  { src: "/images/foto1.jpg", caption: "Aldi's fave pic", date: "Jan '26", accent: "#f06292" },
-  { src: "/images/foto3.jpg", caption: "Too cute", date: "Feb '26", accent: "#f48fb1" },
-  { src: "/images/foto4.jpg", caption: "Best pic", date: "Dec '25", accent: "#ec407a" },
-  { src: "/images/foto5.jpg", caption: "Rayyaa on the train", date: "Dec '25", accent: "#f06292" },
-  { src: "/images/foto7.jpg", caption: "Mwahhh", date: "Jan '26", accent: "#e91e8c" },
-  { src: "/images/foto8.jpg", caption: "Aldi with glasses", date: "Nov '25", accent: "#f48fb1" },
-  { src: "/images/foto9.jpg", caption: "Rayyaa with glasses", date: "Jan '26", accent: "#ec407a" },
-  { src: "/images/foto10.jpg", caption: "Aldi's straight face", date: "Nov '25", accent: "#f06292" },
-  { src: "/images/foto11.jpg", caption: "Us with a TikTok filter", date: "Nov '25", accent: "#f06292" },
-  { src: "/images/foto12.jpg", caption: "Rayyaa looking stunning", date: "Jan '26", accent: "#e91e8c" },
-  { src: "/images/foto13.jpg", caption: "Us, holding each other close", date: "Feb '26", accent: "#f48fb1" },
-  { src: "/images/foto14.jpg", caption: "Adorable", date: "Nov '25", accent: "#ec407a" },
-  { src: "/images/foto15.jpg", caption: "Rayyaa was shaking all over", date: "Dec '25", accent: "#f06292" },
-  { src: "/images/foto16.jpg", caption: "a soft smile", date: "Oct '25", accent: "#f48fb1" },
-  { src: "/images/foto17.jpg", caption: "A candid shot of Rayyaa", date: "Feb '26", accent: "#ec407a" },
-  { src: "/images/foto18.jpg", caption: "us making silly faces with our tongues out", date: "Oct '25", accent: "#f06292" },
-]
