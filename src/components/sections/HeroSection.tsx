@@ -13,8 +13,12 @@ interface HeroSectionProps {
   titleY: MotionValue<number>
 }
 
-const strip1 = ["/images/foto1.jpg", "/images/foto2.jpg", "/images/foto3.jpg", "/images/foto4.jpg", "/images/foto5.jpg"]
-const strip2 = ["/images/foto5.jpg", "/images/foto1.jpg", "/images/foto2.jpg", "/images/foto3.jpg", "/images/foto4.jpg"]
+const strip1 = [
+  "/images/foto1.jpg", "/images/foto2.jpg", "/images/foto4.jpg", "/images/foto11.jpg","/images/foto13.jpg", "/images/foto15.jpg", "/images/foto17.jpg", "/images/foto18.jpg"
+]
+const strip2 = [
+  "/images/foto18.jpg","/images/foto1.jpg", "/images/foto2.jpg", "/images/foto4.jpg", "/images/foto11.jpg","/images/foto13.jpg", "/images/foto15.jpg", "/images/foto17.jpg"
+]
 
 const HeroSection = forwardRef<HTMLDivElement, HeroSectionProps>(
   ({ stripY1, stripY2, heroScale, heroOpacity, titleY }, ref) => {
