@@ -123,7 +123,7 @@ export default function LoveStorySection() {
               }}
             >
               <img
-                src="/images/foto4.jpg"
+                src="/images/foto6.jpg"
                 alt="us"
                 style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                 onError={(e) => {

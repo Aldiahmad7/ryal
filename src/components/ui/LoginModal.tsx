@@ -132,7 +132,7 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
               <span style={{ fontSize: "1rem", opacity: 0.6, marginRight: "10px", flexShrink: 0 }}>✉️</span>
               <input
                 type="email"
-                placeholder="Email kamu"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onFocus={() => setFocusedField("email")}
