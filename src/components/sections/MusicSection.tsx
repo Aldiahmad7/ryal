@@ -4,9 +4,6 @@ import { useRef, useState, useEffect } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import Image from "next/image"
 
-/* =========================
-   🎵 DATA LAGU (STREAM API)
-========================= */
 const songs = [
   {
     title: "Somebody's Pleasure (Extended Version)",
@@ -32,9 +29,6 @@ function formatTime(sec: number) {
   return `${Math.floor(sec / 60)}:${(sec % 60).toString().padStart(2, "0")}`
 }
 
-/* =========================
-   💿 CARD LAGU
-========================= */
 function SongCard({
   song,
   isActive,
@@ -244,7 +238,6 @@ function SongCard({
             )}
           </AnimatePresence>
 
-          {/* Play/pause button - SELALU TERLIHAT */}
           <motion.button
             onClick={togglePlay}
             whileHover={{ scale: 1.1 }}
@@ -253,14 +246,25 @@ function SongCard({
               position: "absolute", bottom: "14px", right: "14px",
               width: "52px", height: "52px", borderRadius: "50%", border: "none",
               background: `linear-gradient(135deg, ${song.accent}, #c2185b)`,
-              color: "white", fontSize: "1.2rem", cursor: "pointer",
+              color: "white", cursor: "pointer",
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: `0 8px 24px ${song.accent}55`,
               zIndex: 2,
-              opacity: 1, // Selalu terlihat
+              opacity: 1,
             }}
           >
-            {playing ? "⏸" : "▶"}
+            {playing ? (
+              /* Pause Icon - Dua garis vertikal */
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16" rx="1" fill="white" />
+                <rect x="14" y="4" width="4" height="16" rx="1" fill="white" />
+              </svg>
+            ) : (
+              /* Play Icon - Segitiga menghadap kanan */
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="8,5 19,12 8,19" fill="white" />
+              </svg>
+            )}
           </motion.button>
         </div>
 
@@ -348,16 +352,13 @@ function SongCard({
   )
 }
 
-/* =========================
-   🎧 SECTION UTAMA
-========================= */
 export default function MusicSection() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
   return (
     <section
       style={{
-        padding: "96px 24px 104px",
+        padding: "50px 24px 50px",
         background: "linear-gradient(180deg, #fdf2f8 0%, #fce4ec 50%, #fff0f6 100%)",
         position: "relative",
         overflow: "hidden",
@@ -394,16 +395,12 @@ export default function MusicSection() {
           transition={{ duration: 0.9, delay: 0.1 }}
           style={{ fontFamily: "'Montserrat', sans-serif", fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.32em", textTransform: "uppercase", color: "#f48fb1", marginBottom: "14px" }}
         >
-          ✦ Chapter IV ✦
+          ✦ Chapter III ✦
         </motion.p>
 
         <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(2.4rem, 6vw, 4rem)", color: "#c2185b", margin: "0 0 14px", textShadow: "0 2px 20px rgba(194,24,91,0.15)" }}>
           Our Playlist 🎧
         </h2>
-
-        <p style={{ fontFamily: "'Nunito', sans-serif", fontSize: "clamp(0.9rem, 2vw, 1.05rem)", color: "#ad1457", opacity: 0.7, margin: "0 0 20px" }}>
-          lagu yang selalu nemenin perjalanan kita 💖
-        </p>
 
         <motion.div
           initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }}
@@ -434,17 +431,6 @@ export default function MusicSection() {
           </div>
         ))}
       </div>
-
-      {/* Bottom tagline */}
-      <motion.p
-        initial={{ opacity: 0, y: 16 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.6, duration: 0.8 }}
-        style={{ marginTop: "52px", fontFamily: "'Dancing Script', cursive", fontSize: "clamp(1.1rem, 3vw, 1.5rem)", color: "#c2185b", opacity: 0.75, textAlign: "center", position: "relative", zIndex: 1 }}
-      >
-        setiap nada, menceritakan kita... 🎵
-      </motion.p>
     </section>
   )
 }
