@@ -89,7 +89,7 @@ export default function LoveLetterSection() {
             marginBottom: "14px",
           }}
         >
-          ✦ Chapter III ✦
+          ✦ Chapter IV ✦
         </motion.p>
 
         {/* Title */}

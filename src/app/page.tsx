@@ -7,6 +7,7 @@ import HeroSection from "@/components/sections/HeroSection"
 import StatsSection from "@/components/sections/StatsSection"
 import LoveStorySection from "@/components/sections/LoveStorySection"
 import GallerySection from "@/components/sections/GallerySection"
+import MusicSection from "@/components/sections/MusicSection"
 import LoveLetterSection from "@/components/sections/LoveLetterSection"
 import FooterSection from "@/components/sections/FooterSection"
 import CursorSparkle from "@/components/ui/CursorSparkle"
@@ -83,6 +84,7 @@ export default function Home() {
       <StatsSection />
       <LoveStorySection />
       <GallerySection />
+      <MusicSection />
       <LoveLetterSection />
       <FooterSection />
       <FloatingLoginButton />
